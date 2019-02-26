@@ -12,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-public class DicoController {
+public class DicoController implements IDicoController {
 
     private static final String CREATIONPARTIEOK = "Création de la partie réussie !";
     private static final String PASCONNECTE = "Vous n'êtes pas connecté !";
@@ -23,32 +23,31 @@ public class DicoController {
     private static final String COUPOK = "Coup joué !";
     private static final String DECONNEXIONOK = "Deconnexion réussie !";
 
-    private final FacadeMotus facade;
+    private FacadeMotus facade;
 
     DicoController() {
         this.facade = new FacadeMotusStatic();
     }
 
+    //OK
     @PostMapping("/motus")
-    ResponseEntity connexion(@RequestParam String pseudo) {
-
+    public ResponseEntity connexion(@RequestParam String pseudo) {
         ResponseEntity reponse = null;
-
         try {
             this.facade.connexion(pseudo);
             reponse = ResponseEntity.ok(CONNEXIONOK);
         } catch (PseudoDejaPrisException e) {
             reponse = ResponseEntity.status(HttpStatus.CONFLICT).body(PSEUDODEJAPRIS);
         }
-
         return reponse;
     }
 
+    //OK
     @PostMapping("/motus/partie/{pseudo}")
-    ResponseEntity creerPartie(@PathVariable String pseudo, @RequestParam(value = "dicoName") String dicoName) {
+    public ResponseEntity creerPartie(@PathVariable String pseudo, @RequestParam String dicoName) {
         ResponseEntity reponse = null;
         try {
-            facade.nouvellePartie(pseudo, dicoName);
+            this.facade.nouvellePartie(pseudo, dicoName);
             reponse = ResponseEntity.ok(CREATIONPARTIEOK);
         } catch (PseudoNonConnecteException e) {
             reponse = ResponseEntity.status(HttpStatus.BAD_REQUEST).body(PASCONNECTE);
@@ -56,8 +55,9 @@ public class DicoController {
         return reponse;
     }
 
+    //OK
     @GetMapping("/motus/partie/{pseudo}")
-    ResponseEntity listeCoupsPrecedents(@PathVariable String pseudo) {
+    public ResponseEntity listeCoupsPrecedents(@PathVariable String pseudo) {
         ResponseEntity reponse = null;
         try {
             reponse = ResponseEntity.ok().body(facade.getPartie(pseudo).getEssais());
@@ -67,8 +67,9 @@ public class DicoController {
         return reponse;
     }
 
+    //OK
     @PutMapping("/motus/partie/{pseudo}")
-    ResponseEntity jouer(@PathVariable String pseudo, @RequestParam String mot) {
+    public ResponseEntity jouer(@PathVariable String pseudo, @RequestParam String mot) {
         ResponseEntity reponse = null;
         try {
             facade.jouer(pseudo, mot);
@@ -83,8 +84,9 @@ public class DicoController {
         return reponse;
     }
 
+    //OK
     @DeleteMapping("/motus/{pseudo}")
-    ResponseEntity deconnexion(@PathVariable String pseudo) {
+    public ResponseEntity deconnexion(@PathVariable String pseudo) {
         ResponseEntity reponse = null;
         try {
             facade.deconnexion(pseudo);
@@ -95,8 +97,9 @@ public class DicoController {
         return reponse;
     }
 
+    //OK
     @GetMapping("/motus/dicos")
-    ResponseEntity listeDicos() {
+    public ResponseEntity listeDicos() {
         return ResponseEntity.ok().body(facade.getListeDicos());
     }
 
