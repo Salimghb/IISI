@@ -9,7 +9,7 @@ import { ProfileInfo } from './profile-info.model';
             <a href="">{{ ribbonEnv }}</a>
         </div>
     `,
-    styleUrls: ['page-ribbon.css']
+    styleUrls: ['page-ribbon.scss']
 })
 export class PageRibbonComponent implements OnInit {
     profileInfo: ProfileInfo;
