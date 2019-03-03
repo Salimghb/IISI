@@ -1,0 +1,34 @@
+{
+    "generator-jhipster": {
+        "promptValues": {
+            "packageName": "fr.orleans.miage.iisi"
+        },
+        "jhipsterVersion": "5.8.1",
+        "applicationType": "monolith",
+        "baseName": "clientweb",
+        "packageName": "fr.orleans.miage.iisi",
+        "packageFolder": "fr/orleans/miage/iisi",
+        "serverPort": "8080",
+        "authenticationType": "jwt",
+        "cacheProvider": "no",
+        "websocket": false,
+        "databaseType": "sql",
+        "devDatabaseType": "mysql",
+        "prodDatabaseType": "mysql",
+        "searchEngine": false,
+        "messageBroker": false,
+        "serviceDiscoveryType": false,
+        "buildTool": "maven",
+        "enableSwaggerCodegen": false,
+        "jwtSecretKey": "YjkxNjUzYjNiMDkwNzVmYjE3NDBkMTUyNWYyZWZhMDBmN2VjYWQyOWVhZThlOGU1MDM3MTYyNzQ3MDU4N2E5YjI3NWFjMmIyYTA4NzJlNWM4NDJkYTQ3ZWQ3YzRlYzgwNjkxOTFhMjM4NjM0ZDNhYTFjYjljMmZkY2Y3N2RlNjQ=",
+        "clientFramework": "angularX",
+        "useSass": false,
+        "clientPackageManager": "npm",
+        "testFrameworks": [],
+        "jhiPrefix": "jhi",
+        "entitySuffix": "",
+        "dtoSuffix": "DTO",
+        "otherModules": [],
+        "enableTranslation": false
+    }
+}
