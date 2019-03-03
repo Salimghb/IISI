@@ -7,8 +7,14 @@ import exceptions.PseudoDejaPrisException;
 import exceptions.PseudoNonConnecteException;
 import facade.FacadeMotus;
 import facade.FacadeMotusStatic;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.ws.rs.Consumes;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.util.Collection;
+import java.util.List;
 
 @RestController
 public class DicoController implements IDicoController {
@@ -26,43 +32,50 @@ public class DicoController implements IDicoController {
 
     //OK
     @PostMapping("/motus")
-    public ResponseEntity connexion(@RequestParam String pseudo) throws PseudoDejaPrisException {
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response connexion(String pseudo) throws PseudoDejaPrisException {
         this.facade.connexion(pseudo);
-        return ResponseEntity.ok(CONNEXIONOK);
+        return Response.ok(CONNEXIONOK).build();
     }
-
 
     //OK
     @PostMapping("/motus/partie/{pseudo}")
-    public ResponseEntity creerPartie(@PathVariable String pseudo, @RequestParam String dicoName) throws PseudoNonConnecteException {
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response creerPartie(@PathVariable String pseudo, String dicoName) throws PseudoNonConnecteException {
         this.facade.nouvellePartie(pseudo, dicoName);
-        return ResponseEntity.ok(CREATIONPARTIEOK);
+        return Response.ok(CREATIONPARTIEOK).build();
     }
 
     //OK
     @GetMapping("/motus/partie/{pseudo}")
-    public ResponseEntity listeCoupsPrecedents(@PathVariable String pseudo) throws PseudoNonConnecteException {
-        return ResponseEntity.ok().body(facade.getPartie(pseudo).getEssais());
+    @Produces(MediaType.APPLICATION_JSON)
+    public List listeCoupsPrecedents(@PathVariable String pseudo) throws PseudoNonConnecteException {
+        return facade.getPartie(pseudo).getEssais();
     }
 
     //OK
     @PutMapping("/motus/partie/{pseudo}")
-    public ResponseEntity jouer(@PathVariable String pseudo, @RequestParam String mot) throws MotInexistantException, MaxNbCoupsException, PseudoNonConnecteException {
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response jouer(@PathVariable String pseudo, String mot) throws MotInexistantException, MaxNbCoupsException, PseudoNonConnecteException {
         facade.jouer(pseudo, mot);
-        return ResponseEntity.ok(COUPOK);
+        return Response.ok(COUPOK).entity(mot).build();
     }
 
     //OK
     @DeleteMapping("/motus/{pseudo}")
-    public ResponseEntity deconnexion(@PathVariable String pseudo) throws PseudoNonConnecteException {
+    public Response deconnexion(@PathVariable String pseudo) throws PseudoNonConnecteException {
         facade.deconnexion(pseudo);
-        return ResponseEntity.ok(DECONNEXIONOK);
+        return Response.ok(DECONNEXIONOK).build();
     }
 
     //OK
     @GetMapping("/motus/dicos")
-    public ResponseEntity listeDicos() {
-        return ResponseEntity.ok().body(facade.getListeDicos());
+    @Produces(MediaType.APPLICATION_JSON)
+    public Collection listeDicos() {
+        return facade.getListeDicos();
     }
 
 }
