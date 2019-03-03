@@ -1,9 +1,0 @@
-exceptions\MotInexistantException.class
-exceptions\PseudoNonConnecteException.class
-exceptions\MaxNbCoupsException.class
-exceptions\PseudoDejaPrisException.class
-modele\Partie.class
-facade\FacadeMotusStatic.class
-facade\FacadeMotus.class
-modele\Dico.class
-modele\Joueur.class

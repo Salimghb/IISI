@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: fr.orleans.miage.iisi.tp1ws.Tp1WsApplicationTests
--------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.882 s - in fr.orleans.miage.iisi.tp1ws.Tp1WsApplicationTests
