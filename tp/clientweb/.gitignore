@@ -106,6 +106,9 @@ Desktop.ini
 # Thumbnails
 ._*
 
+*.iml
+target
+
 # Files that might appear on external disk
 .Spotlight-V100
 .Trashes
@@ -143,3 +146,4 @@ Desktop.ini
 # ESLint
 ######################
 .eslintcache
+.angulardoc.json
