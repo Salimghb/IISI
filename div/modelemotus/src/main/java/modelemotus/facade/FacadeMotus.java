@@ -1,11 +1,10 @@
-package facade;
+package modelemotus.facade;
 
-import exceptions.MaxNbCoupsException;
-import exceptions.MotInexistantException;
-import exceptions.PseudoDejaPrisException;
-import exceptions.PseudoNonConnecteException;
-import modele.Dico;
-import modele.Partie;
+import modelemotus.exceptions.MaxNbCoupsException;
+import modelemotus.exceptions.MotInexistantException;
+import modelemotus.exceptions.PseudoDejaPrisException;
+import modelemotus.exceptions.PseudoNonConnecteException;
+import modelemotus.modele.Partie;
 
 import java.util.Collection;
 

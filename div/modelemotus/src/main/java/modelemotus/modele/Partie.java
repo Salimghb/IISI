@@ -1,23 +1,42 @@
-package modele;
+package modelemotus.modele;
 
-import exceptions.MaxNbCoupsException;
-import exceptions.MotInexistantException;
+import modelemotus.exceptions.MaxNbCoupsException;
+import modelemotus.exceptions.MotInexistantException;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * La partie d'un joueur, avec ses essais successifs et le dictionnaire utilisé
  */
+@Entity
+@Data
+@NoArgsConstructor
 public class Partie {
+
     public static final int MAX_NB_COUPS = 8;
+
+    @Id
+    @GeneratedValue
+    private long idPartie;
+
     private String motRecherche;
-    private Dico leDico;
+
+    @OneToOne
+    private Joueur joueur;
+
+    @ManyToOne
+    private Dico dico;
+
+    @ElementCollection
     private List<String> essais;
 
     public Partie(Dico dico) {
         essais = new ArrayList<>();
-        leDico = dico;
+        this.dico = dico;
         motRecherche = dico.getRandomMot();
     }
 
@@ -26,7 +45,7 @@ public class Partie {
         String motMaj = mot.toUpperCase();
         essais.add(motMaj);
         // le mot n'existe pas
-        if (!leDico.isMot(motMaj)) throw new MotInexistantException(mot);
+        if (!dico.isMot(motMaj)) throw new MotInexistantException(mot);
 
         return correspondance(motMaj);
     }
@@ -99,7 +118,36 @@ public class Partie {
         this.motRecherche = motRecherche;
     }
 
+
+    public static int getMaxNbCoups() {
+        return MAX_NB_COUPS;
+    }
+
+    public long getIdPartie() {
+        return idPartie;
+    }
+
+    public void setIdPartie(long idPartie) {
+        this.idPartie = idPartie;
+    }
+
+    public Joueur getJoueur() {
+        return joueur;
+    }
+
+    public void setJoueur(Joueur joueur) {
+        this.joueur = joueur;
+    }
+
     public Dico getDico() {
-        return leDico;
+        return dico;
+    }
+
+    public void setDico(Dico dico) {
+        this.dico = dico;
+    }
+
+    public void setEssais(List<String> essais) {
+        this.essais = essais;
     }
 }

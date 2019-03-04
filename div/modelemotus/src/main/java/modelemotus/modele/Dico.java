@@ -1,6 +1,15 @@
-package modele;
+package modelemotus.modele;
 
-import java.io.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,10 +20,23 @@ import java.util.stream.Stream;
 /**
  * Created by Fred on 02/06/2016.
  */
+@Entity
+@Data
+@NoArgsConstructor
 public class Dico {
+
+    @Id
+    @GeneratedValue
+    private long idDico;
+
     public static final String DEFAULT_FILENAME = "dicosimple7lettres";
+
     private volatile static Map<String, Dico> instanceByFile = new HashMap<>();
-    private List<String> list = new ArrayList<>();
+
+    @ElementCollection
+    private List<String> listMots = new ArrayList<>();
+
+
 
     private Dico(String filePath) {
         BufferedReader buffer = null;
@@ -24,7 +46,7 @@ public class Dico {
         InputStream in = (InputStream) (Dico.class.getResourceAsStream(filePath+".txt"));
         buffer = new BufferedReader(new InputStreamReader(in));
         try (Stream<String> stream = buffer.lines()) {
-            list = stream
+            listMots = stream
                     .map(String::toUpperCase)
                     .collect(Collectors.toList());
         }
@@ -42,15 +64,15 @@ public class Dico {
     }
 
     public String getRandomMot() {
-        int num = (int) (Math.random() * list.size());
-        return list.get(num);
+        int num = (int) (Math.random() * listMots.size());
+        return listMots.get(num);
     }
 
     public boolean isMot(String mot) {
-        return list.contains(mot);
+        return listMots.contains(mot);
     }
 
-    public List<String> getList() {
-        return list;
+    public List<String> getListMots() {
+        return listMots;
     }
 }

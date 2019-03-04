@@ -1,4 +1,4 @@
-package exceptions;
+package modelemotus.exceptions;
 
 /**
  * Created by Fred on 06/06/2016.

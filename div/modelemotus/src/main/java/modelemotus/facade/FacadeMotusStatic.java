@@ -1,11 +1,11 @@
-package facade;
+package modelemotus.facade;
 
-import exceptions.MaxNbCoupsException;
-import exceptions.MotInexistantException;
-import exceptions.PseudoDejaPrisException;
-import exceptions.PseudoNonConnecteException;
-import modele.Dico;
-import modele.Partie;
+import modelemotus.exceptions.MaxNbCoupsException;
+import modelemotus.exceptions.MotInexistantException;
+import modelemotus.exceptions.PseudoDejaPrisException;
+import modelemotus.exceptions.PseudoNonConnecteException;
+import modelemotus.modele.Dico;
+import modelemotus.modele.Partie;
 
 import java.util.*;
 
@@ -14,9 +14,6 @@ public class FacadeMotusStatic implements FacadeMotus {
     private Map<String, Partie> parties = new HashMap<>();
 
     private Collection<String> pseudos= new ArrayList<>();
-
-
-
 
     private void checkConnecte(String pseudo) throws PseudoNonConnecteException {
         if (!this.pseudos.contains(pseudo)) {

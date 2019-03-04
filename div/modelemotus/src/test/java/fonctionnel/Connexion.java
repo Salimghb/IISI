@@ -1,8 +1,8 @@
 package fonctionnel;
 
-import exceptions.PseudoDejaPrisException;
-import facade.FacadeMotusStatic;
-import facade.FacadeMotus;
+import modelemotus.exceptions.PseudoDejaPrisException;
+import modelemotus.facade.FacadeMotusStatic;
+import modelemotus.facade.FacadeMotus;
 import org.junit.Assert;
 import org.junit.Test;
 
