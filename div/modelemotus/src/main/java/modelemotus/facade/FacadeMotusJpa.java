@@ -4,6 +4,7 @@ import modelemotus.exceptions.MaxNbCoupsException;
 import modelemotus.exceptions.MotInexistantException;
 import modelemotus.exceptions.PseudoDejaPrisException;
 import modelemotus.exceptions.PseudoNonConnecteException;
+import modelemotus.modele.Dico;
 import modelemotus.modele.Joueur;
 import modelemotus.modele.Partie;
 import modelemotus.repositories.DicoRepository;
@@ -12,7 +13,7 @@ import modelemotus.repositories.PartieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -29,32 +30,34 @@ public class FacadeMotusJpa implements FacadeMotus {
         this.partieRepository = partieRepository;
     }
 
-    private void checkConnecte(String pseudo) throws PseudoNonConnecteException {
+    private Joueur checkConnecte(String pseudo) throws PseudoNonConnecteException {
 
-        Optional<Joueur> optionalJoueur = this.joueurRepository.findByNom(pseudo);
+        Optional<Joueur> optionalJoueur = joueurRepository.findByNom(pseudo);
 
         if (!optionalJoueur.isPresent() || !optionalJoueur.get().isEstConnecte()) {
             throw new PseudoNonConnecteException();
         }
+
+        return optionalJoueur.get();
 
     }
 
     @Override
     public void connexion(String pseudo) throws PseudoDejaPrisException {
 
-        Optional<Joueur> optionalJoueur = this.joueurRepository.findByNom(pseudo);
+        Optional<Joueur> optionalJoueur = joueurRepository.findByNom(pseudo);
 
         if (optionalJoueur.isPresent()) {
             throw new PseudoDejaPrisException();
         }
 
-        this.joueurRepository.save(new Joueur(pseudo, true));
+        joueurRepository.save(new Joueur(pseudo, true));
 
     }
 
     @Override
     public void deconnexion(String pseudo) throws PseudoNonConnecteException {
-        Optional<Joueur> optionalJoueur = this.joueurRepository.findByNom(pseudo);
+        Optional<Joueur> optionalJoueur = joueurRepository.findByNom(pseudo);
 
         if (!optionalJoueur.isPresent() || !optionalJoueur.get().isEstConnecte()) {
             throw new PseudoNonConnecteException();
@@ -62,28 +65,42 @@ public class FacadeMotusJpa implements FacadeMotus {
 
         Joueur joueur = optionalJoueur.get();
         joueur.setEstConnecte(false);
+        joueur.getPartie().setTerminee(true);
 
-        this.joueurRepository.save(joueur);
+        joueurRepository.save(joueur);
+        partieRepository.save(joueur.getPartie());
     }
 
     //TODO
+
     @Override
-    public String jouer(String pseudo, String mot) throws PseudoNonConnecteException, MotInexistantException, MaxNbCoupsException {
-        return null;
+    public String jouer(String pseudo, String mot) throws MotInexistantException, MaxNbCoupsException, PseudoNonConnecteException {
+        Joueur joueur = this.checkConnecte(pseudo);
+        Partie p = joueur.getPartie();
+        String corresp = p.jouer(mot);
+        partieRepository.save(p);
+
+        return corresp;
     }
+
 
     @Override
     public void nouvellePartie(String pseudo, String dicoName) throws PseudoNonConnecteException {
-
+        Joueur joueur = this.checkConnecte(pseudo);
+        partieRepository.save(new Partie(Dico.getInstance(dicoName), joueur));
     }
 
     @Override
-    public Collection<String> getListeDicos() {
-        return null;
+    public List<Dico> getListeDicos(){
+        return dicoRepository.findAll();
     }
 
     @Override
     public Partie getPartie(String pseudo) throws PseudoNonConnecteException {
-        return null;
+        Joueur joueur = this.checkConnecte(pseudo);
+        return joueur.getPartie();
     }
+
+
+
 }

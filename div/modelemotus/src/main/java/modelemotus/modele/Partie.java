@@ -23,7 +23,9 @@ public class Partie {
     @GeneratedValue
     private long idPartie;
 
+
     private String motRecherche;
+    private boolean terminee;
 
     @OneToOne
     private Joueur joueur;
@@ -34,7 +36,8 @@ public class Partie {
     @ElementCollection
     private List<String> essais;
 
-    public Partie(Dico dico) {
+    public Partie(Dico dico, Joueur joueur) {
+        this.joueur = joueur;
         essais = new ArrayList<>();
         this.dico = dico;
         motRecherche = dico.getRandomMot();
@@ -150,4 +153,13 @@ public class Partie {
     public void setEssais(List<String> essais) {
         this.essais = essais;
     }
+
+    public boolean isTerminee() {
+        return terminee;
+    }
+
+    public void setTerminee(boolean terminee) {
+        this.terminee = terminee;
+    }
+
 }

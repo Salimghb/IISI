@@ -4,9 +4,10 @@ import modelemotus.exceptions.MaxNbCoupsException;
 import modelemotus.exceptions.MotInexistantException;
 import modelemotus.exceptions.PseudoDejaPrisException;
 import modelemotus.exceptions.PseudoNonConnecteException;
+import modelemotus.modele.Dico;
 import modelemotus.modele.Partie;
 
-import java.util.Collection;
+import java.util.List;
 
 public interface FacadeMotus {
     /**
@@ -52,7 +53,7 @@ public interface FacadeMotus {
      *
      * @return la liste des dictionnaires disponibles.
      */
-    Collection<String> getListeDicos();
+    List<Dico> getListeDicos();
 
     /**
      * Permet d'obtenir la partie du joueur pseudo

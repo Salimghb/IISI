@@ -965,6 +965,7 @@
                         <groupId>org.springframework.boot</groupId>
                         <artifactId>spring-boot-maven-plugin</artifactId>
                         <configuration>
+                            <!--suppress UnresolvedMavenProperty -->
                             <mainClass>${start-class}</mainClass>
                             <executable>true</executable>
                             <fork>true</fork>
