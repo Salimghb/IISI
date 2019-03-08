@@ -1,5 +1,11 @@
 package fr.orleans.miage.iisi.webservice.controllers;
 
+import fr.orleans.miage.iisi.modele.exceptions.MaxNbCoupsException;
+import fr.orleans.miage.iisi.modele.exceptions.MotInexistantException;
+import fr.orleans.miage.iisi.modele.exceptions.PseudoDejaPrisException;
+import fr.orleans.miage.iisi.modele.exceptions.PseudoNonConnecteException;
+import fr.orleans.miage.iisi.modele.facade.FacadeMotus;
+import fr.orleans.miage.iisi.modele.facade.IFacadeMotus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.ws.rs.Consumes;
@@ -15,10 +21,10 @@ public class MotusController implements IMotusController{
     private static final String COUPOK = "Coup joué !";
     private static final String DECONNEXIONOK = "Deconnexion réussie !";
 
-    private FacadeMotus facade;
+    private IFacadeMotus facade;
 
     MotusController() {
-        this.facade = new FacadeMotusStatic();
+        this.facade = new FacadeMotus();
     }
 
     //OK

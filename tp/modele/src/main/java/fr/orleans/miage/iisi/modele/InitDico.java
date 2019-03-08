@@ -1,16 +1,16 @@
 package fr.orleans.miage.iisi.modele;
 
-import fr.orleans.miage.iisi.modele.facade.FacadeMotus;
+import fr.orleans.miage.iisi.modele.facade.IFacadeMotus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 
 public class InitDico implements ApplicationRunner {
 
-    private FacadeMotus facade;
+    private IFacadeMotus facade;
 
     @Autowired
-    public InitDico(FacadeMotus facade) {
+    public InitDico(IFacadeMotus facade) {
         this.facade = facade;
     }
 
