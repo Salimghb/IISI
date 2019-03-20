@@ -4,11 +4,11 @@ import fr.orleans.miage.iisi.modele.exceptions.MaxNbCoupsException;
 import fr.orleans.miage.iisi.modele.exceptions.MotInexistantException;
 import fr.orleans.miage.iisi.modele.exceptions.PseudoDejaPrisException;
 import fr.orleans.miage.iisi.modele.exceptions.PseudoNonConnecteException;
-import fr.orleans.miage.iisi.modele.modele.Dico;
-import fr.orleans.miage.iisi.modele.modele.Joueur;
-import fr.orleans.miage.iisi.modele.modele.Partie;
+import fr.orleans.miage.iisi.modele.model.Dico;
+import fr.orleans.miage.iisi.modele.model.User;
+import fr.orleans.miage.iisi.modele.model.Partie;
 import fr.orleans.miage.iisi.modele.repositories.DicoRepository;
-import fr.orleans.miage.iisi.modele.repositories.JoueurRepository;
+import fr.orleans.miage.iisi.modele.repositories.UserRepository;
 import fr.orleans.miage.iisi.modele.repositories.PartieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,7 +26,7 @@ public class FacadeMotus implements IFacadeMotus {
     @Autowired
     private DicoRepository dicoRepository;
     @Autowired
-    private JoueurRepository joueurRepository;
+    private UserRepository userRepository;
     @Autowired
     private PartieRepository partieRepository;
 
@@ -43,9 +43,9 @@ public class FacadeMotus implements IFacadeMotus {
         dicoRepository.save(dico);
     }
 
-    private Joueur checkConnecte(String pseudo) throws PseudoNonConnecteException {
+    private User checkConnecte(String pseudo) throws PseudoNonConnecteException {
 
-        Optional<Joueur> optionalJoueur = joueurRepository.findByNom(pseudo);
+        Optional<User> optionalJoueur = userRepository.findByNom(pseudo);
 
         if (!optionalJoueur.isPresent() || !optionalJoueur.get().isEstConnecte()) {
             throw new PseudoNonConnecteException();
@@ -58,38 +58,38 @@ public class FacadeMotus implements IFacadeMotus {
     @Override
     public void connexion(String pseudo) throws PseudoDejaPrisException {
 
-        Optional<Joueur> optionalJoueur = joueurRepository.findByNom(pseudo);
+        Optional<User> optionalJoueur = userRepository.findByNom(pseudo);
 
         if (optionalJoueur.isPresent()) {
             throw new PseudoDejaPrisException();
         }
 
-        joueurRepository.save(new Joueur(pseudo, true));
+        userRepository.save(new User(pseudo, true));
 
     }
 
     @Override
     public void deconnexion(String pseudo) throws PseudoNonConnecteException {
-        Optional<Joueur> optionalJoueur = joueurRepository.findByNom(pseudo);
+        Optional<User> optionalJoueur = userRepository.findByNom(pseudo);
 
         if (!optionalJoueur.isPresent() || !optionalJoueur.get().isEstConnecte()) {
             throw new PseudoNonConnecteException();
         }
 
-        Joueur joueur = optionalJoueur.get();
-        joueur.setEstConnecte(false);
-        joueur.getPartie().setTerminee(true);
+        User user = optionalJoueur.get();
+        user.setEstConnecte(false);
+        user.getPartie().setTerminee(true);
 
-        joueurRepository.save(joueur);
-        partieRepository.save(joueur.getPartie());
+        userRepository.save(user);
+        partieRepository.save(user.getPartie());
     }
 
     //TODO
 
     @Override
     public String jouer(String pseudo, String mot) throws MotInexistantException, MaxNbCoupsException, PseudoNonConnecteException {
-        Joueur joueur = this.checkConnecte(pseudo);
-        Partie p = joueur.getPartie();
+        User user = this.checkConnecte(pseudo);
+        Partie p = user.getPartie();
         String corresp = p.jouer(mot);
         partieRepository.save(p);
 
@@ -99,8 +99,8 @@ public class FacadeMotus implements IFacadeMotus {
 
     @Override
     public void nouvellePartie(String pseudo, String dicoName) throws PseudoNonConnecteException {
-        Joueur joueur = this.checkConnecte(pseudo);
-        partieRepository.save(new Partie(Dico.getInstance(dicoName), joueur));
+        User user = this.checkConnecte(pseudo);
+        partieRepository.save(new Partie(Dico.getInstance(dicoName), user));
     }
 
     @Override
@@ -110,8 +110,8 @@ public class FacadeMotus implements IFacadeMotus {
 
     @Override
     public Partie getPartie(String pseudo) throws PseudoNonConnecteException {
-        Joueur joueur = this.checkConnecte(pseudo);
-        return joueur.getPartie();
+        User user = this.checkConnecte(pseudo);
+        return user.getPartie();
     }
 
 

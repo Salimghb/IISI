@@ -1,20 +1,21 @@
-package fr.orleans.miage.iisi.modele.modele;
+package fr.orleans.miage.iisi.modele.model;
 
 import fr.orleans.miage.iisi.modele.exceptions.MaxNbCoupsException;
 import fr.orleans.miage.iisi.modele.exceptions.MotInexistantException;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * La partie d'un joueur, avec ses essais successifs et le dictionnaire utilisé
+ * La partie d'un user, avec ses essais successifs et le dictionnaire utilisé
  */
 @Entity
 @Data
 @NoArgsConstructor
+@Getter
+@Setter
 public class Partie {
 
     public static final int MAX_NB_COUPS = 8;
@@ -28,7 +29,7 @@ public class Partie {
     private boolean terminee;
 
     @OneToOne
-    private Joueur joueur;
+    private User user;
 
     @ManyToOne
     private Dico dico;
@@ -36,8 +37,8 @@ public class Partie {
     @ElementCollection
     private List<String> essais;
 
-    public Partie(Dico dico, Joueur joueur) {
-        this.joueur = joueur;
+    public Partie(Dico dico, User user) {
+        this.user = user;
         essais = new ArrayList<>();
         this.dico = dico;
         motRecherche = dico.getRandomMot();
@@ -51,14 +52,6 @@ public class Partie {
         if (!dico.isMot(motMaj)) throw new MotInexistantException(mot);
 
         return correspondance(motMaj);
-    }
-
-    public List<String> getEssais() {
-        return essais;
-    }
-
-    public int getNbEssais() {
-        return essais.size();
     }
 
     /*
@@ -111,55 +104,6 @@ public class Partie {
             }
         }
         return new String(resultat);
-    }
-
-    public String getMotRecherche() {
-        return motRecherche;
-    }
-
-    public void setMotRecherche(String motRecherche) {
-        this.motRecherche = motRecherche;
-    }
-
-
-    public static int getMaxNbCoups() {
-        return MAX_NB_COUPS;
-    }
-
-    public long getIdPartie() {
-        return idPartie;
-    }
-
-    public void setIdPartie(long idPartie) {
-        this.idPartie = idPartie;
-    }
-
-    public Joueur getJoueur() {
-        return joueur;
-    }
-
-    public void setJoueur(Joueur joueur) {
-        this.joueur = joueur;
-    }
-
-    public Dico getDico() {
-        return dico;
-    }
-
-    public void setDico(Dico dico) {
-        this.dico = dico;
-    }
-
-    public void setEssais(List<String> essais) {
-        this.essais = essais;
-    }
-
-    public boolean isTerminee() {
-        return terminee;
-    }
-
-    public void setTerminee(boolean terminee) {
-        this.terminee = terminee;
     }
 
 }

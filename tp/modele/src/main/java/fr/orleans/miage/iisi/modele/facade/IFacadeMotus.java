@@ -4,8 +4,8 @@ import fr.orleans.miage.iisi.modele.exceptions.MaxNbCoupsException;
 import fr.orleans.miage.iisi.modele.exceptions.MotInexistantException;
 import fr.orleans.miage.iisi.modele.exceptions.PseudoDejaPrisException;
 import fr.orleans.miage.iisi.modele.exceptions.PseudoNonConnecteException;
-import fr.orleans.miage.iisi.modele.modele.Dico;
-import fr.orleans.miage.iisi.modele.modele.Partie;
+import fr.orleans.miage.iisi.modele.model.Dico;
+import fr.orleans.miage.iisi.modele.model.Partie;
 
 import java.util.List;
 
@@ -13,7 +13,7 @@ import java.util.List;
     /**
      * Lance une nouvelle partie avec le pseudo
      *
-     * @param pseudo le pseudo du joueur
+     * @param pseudo le pseudo du user
      * @return true si la connexion est possible (aucun pseudo identique existant) et false sinon
      * @exception PseudoDejaPrisException : lorsque le pseudo est déjà pris
      */
@@ -24,13 +24,13 @@ import java.util.List;
     /**
      * Deconnecte un joureur
      *
-     * @param pseudo le pseudo du joueur
+     * @param pseudo le pseudo du user
      * @exception PseudoNonConnecteException : le pseudo voulant se déconnecter n'est pas connecté
      */
      void deconnexion(String pseudo) throws PseudoNonConnecteException;
 
     /**
-     * Le joueur pseudo veut jouer le mot "mot" dans la partie en cours
+     * Le user pseudo veut jouer le mot "mot" dans la partie en cours
      *
      * @param pseudo
      * @param mot
@@ -57,10 +57,10 @@ import java.util.List;
     List<Dico> getListeDicos();
 
     /**
-     * Permet d'obtenir la partie du joueur pseudo
+     * Permet d'obtenir la partie du user pseudo
      *
      * @param pseudo
-     * @return la partie du joueur
+     * @return la partie du user
      * @exception PseudoNonConnecteException : le pseudo voulant se déconnecter n'est pas connecté
      */
     Partie getPartie(String pseudo)  throws PseudoNonConnecteException;

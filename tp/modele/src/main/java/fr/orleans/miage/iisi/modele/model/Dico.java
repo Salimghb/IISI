@@ -1,4 +1,4 @@
-package fr.orleans.miage.iisi.modele.modele;
+package fr.orleans.miage.iisi.modele.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -36,12 +36,11 @@ public class Dico {
 
 
     public Dico(String filePath) {
-        BufferedReader buffer = null;
 //        filePath = (Dico.class).getResource(filePath+".txt").getFile();
         //   = new BufferedReader(new FileReader(filePath));
 
-        InputStream in = (InputStream) (Dico.class.getResourceAsStream(filePath+".txt"));
-        buffer = new BufferedReader(new InputStreamReader(in));
+        InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream(filePath+".txt");
+        BufferedReader buffer = new BufferedReader(new InputStreamReader(in));
         try (Stream<String> stream = buffer.lines()) {
             listMots = stream
                     .map(String::toUpperCase)
